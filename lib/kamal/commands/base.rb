@@ -11,7 +11,7 @@ module Kamal::Commands
     end
 
     def run_over_ssh(*command, host:)
-      "ssh#{ssh_proxy_args}#{ssh_config_args} -t #{config.ssh.user}@#{host} -p #{config.ssh.port} '#{command.join(" ").gsub("'", "'\\\\''")}'"
+      "ssh#{ssh_args(host)} '#{command.join(" ").gsub("'", "'\\\\''")}'"
     end
 
     def container_id_for(container_name:, only_running: false)
@@ -84,6 +84,15 @@ module Kamal::Commands
 
       def tags(**details)
         Kamal::Tags.from_config(config, **details)
+      end
+
+      def ssh_args(host)
+        case config.ssh.config
+        when String
+          "#{ssh_proxy_args}#{ssh_config_args} -t #{host}"
+        else
+          "#{ssh_proxy_args}#{ssh_config_args} -t #{config.ssh.user}@#{host} -p #{config.ssh.port}"
+        end
       end
 
       def ssh_proxy_args

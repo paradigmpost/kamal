@@ -43,7 +43,14 @@ class Kamal::Configuration::Ssh
   end
 
   def options
-    { user: user, port: port, proxy: proxy, logger: logger, keepalive: true, keepalive_interval: 30, keys_only: keys_only, keys: keys, key_data: key_data, config: config }.compact
+    h = { user: user, port: port, proxy: proxy, logger: logger, keepalive: true, keepalive_interval: 30, keys_only: keys_only, keys: keys, key_data: key_data, config: config }.compact
+
+    if config.is_a? String
+      h.delete(:user)
+      h.delete(:port)
+    end
+
+    h
   end
 
   def to_h

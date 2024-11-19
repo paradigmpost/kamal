@@ -19,10 +19,14 @@ ssh:
 
   # The SSH user
   #
+  # Has no effect if a path to a custom config is used for the `config` parameter.
+  #
   # Defaults to `root`:
   user: app
 
   # The SSH port
+  #
+  # Has no effect if a path to a custom config is used for the `config` parameter.
   #
   # Defaults to 22:
   port: "2222"
